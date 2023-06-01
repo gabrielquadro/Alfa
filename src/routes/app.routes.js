@@ -11,7 +11,12 @@ import FuncionariosList from '../pages/FuncionariosList'
 import AddFuncionario from '../pages/AddFuncionario';
 import Cidades from '../pages/Cidades';
 import AddCidades from '../pages/AddCidades';
-
+import Empresas from '../pages/Empresas';
+import AddEmpresa from '../pages/AddEmpresa';
+import Marca from '../pages/Marca';
+import AddMarca from '../pages/AddMarca';
+import Modelo from '../pages/Modelo';
+import AddModelo from '../pages/AdddModelo';
 
 const DrawerMenu = createDrawerNavigator();
 const StackHome = createNativeStackNavigator();
@@ -35,8 +40,11 @@ function AppRoutes() {
 
             <StackHome.Screen name="Drawer" component={MenuRoutes} options={{ headerShown: false }} />
             <StackHome.Screen name="Perfil" component={Profile} options={{ headerShown: true }} />
-            <StackHome.Screen name="AddFuncionario" component={AddFuncionario} options={{ headerShown: true }} />
-            <StackHome.Screen name="AddCidades" component={AddCidades} options={{ headerShown: true }} />
+            <StackHome.Screen name="AddFuncionario" component={AddFuncionario} options={{ headerShown: true , headerTitle:'Novo funcionário' }} />
+            <StackHome.Screen name="AddCidades" component={AddCidades} options={{ headerShown: true, headerTitle:'Nova cidade'}} />
+            <StackHome.Screen name="AddEmpresa" component={AddEmpresa} options={{ headerShown: true , headerTitle:'Nova empresa'}} />
+            <StackHome.Screen name="AddModelos" component={AddModelo} options={{ headerShown: true , headerTitle:'Novo modelo'}} />
+            <StackHome.Screen name="AddMarca" component={AddMarca} options={{ headerShown: true , headerTitle:'Nova marca'}} />
         </StackHome.Navigator>
     )
 }
@@ -58,7 +66,7 @@ function MenuRoutes() {
             <DrawerMenu.Screen
                 name="Empresas"
                 headerShown='false'
-                component={Profile}
+                component={Empresas}
                 options={{
                     drawerIcon: ({ color }) => (
                         <Feather name="user" size={22} color={color} />
@@ -99,7 +107,7 @@ function MenuRoutes() {
             <DrawerMenu.Screen
                 name="Marca veiculos"
                 headerShown='false'
-                component={Profile}
+                component={Marca}
                 options={{
                     drawerIcon: ({ color }) => (
                         <FontAwesome5 name="car-side" size={22} color={color} />
@@ -110,9 +118,9 @@ function MenuRoutes() {
                 }}
             />
             <DrawerMenu.Screen
-                name="Modelo veiculos"
+                name="Modelos veiculos"
                 headerShown='false'
-                component={Profile}
+                component={Modelo}
                 options={{
                     drawerIcon: ({ color }) => (
                         <FontAwesome5 name="car-side" size={22} color={color} />

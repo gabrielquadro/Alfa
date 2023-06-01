@@ -9,7 +9,7 @@ import PostsList from '../../components/PostsList'
 
 
 
-export default function Cidades() {
+export default function Modelo() {
     // const navigation = useNavigation();
     // const { user } = useContext(AuthContext);
     // const [posts, setPosts] = useState([]);
@@ -19,17 +19,16 @@ export default function Cidades() {
     // const [emptyList, setEmptyList] = useState(false);
     const navigation = useNavigation();
     const { signOut, user } = useContext(AuthContext);
-    const [cidades, setCidades] = useState([]);
+    const [modelos, setModelos] = useState([]);
 
     useFocusEffect(
         useCallback(() => {
-            async function fetchPosts() {
             setLoading(true);
-
-                await db.collection('cidades')
+            async function fetchPosts() {
+                await db.collection('modelos')
                     .get()
                     .then((snapshoot) => {
-                        setCidades([]);
+                        setModelos([]);
                         const formList = [];
                         snapshoot.docs.map(u => {
                             formList.push({
@@ -38,7 +37,7 @@ export default function Cidades() {
                             })
                         })
 
-                        setCidades(formList);
+                        setModelos(formList);
                         setLoading(false);
 
                     })
@@ -47,6 +46,26 @@ export default function Cidades() {
 
         }, [])
     );
+
+    async function loadMarca() {
+
+        // await db.collection('marcas')
+        //     .get()
+        //     .then((snapshoot) => {
+        //         setModelos([]);
+        //         const formList = [];
+        //         snapshoot.docs.map(u => {
+        //             formList.push({
+        //                 ...u.data(),
+        //                 id: u.id,
+        //             })
+        //         })
+
+        //         setModelos(formList);
+
+        //     })
+
+    }
 
     return (
         <View style={styles.container}>
@@ -58,17 +77,17 @@ export default function Cidades() {
                 </View>
             ) : (
                 <View style={{ flex: 1 }}>
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("AddCidades",{cidade:null})}>
-                        <Text style={styles.btnSairTxt}>Nova cidade</Text>
-                    </TouchableOpacity>              
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("AddModelos", { item: null })}>
+                        <Text style={styles.btnSairTxt}>Novo modelo</Text>
+                    </TouchableOpacity>
                     <FlatList
                         style={styles.list}
-                        data={cidades}
+                        data={modelos}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.listView} onPress={()=> navigation.navigate('AddCidades',{cidade:item})}>
+                            <TouchableOpacity style={styles.listView} onPress={() => navigation.navigate('AddModelos', { item: item })}>
                                 <Text>{item.nome}</Text>
-                                <Text>{item.estado}</Text>
+                                <Text>{item.marca}</Text>
                             </TouchableOpacity>
                         )}
 
@@ -113,14 +132,14 @@ const styles = StyleSheet.create({
     },
     listView: {
         flexDirection: 'row',
-    // marginTop: 8,
-    margin: 2,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    elevation: 3,
-    padding: 15,
-    alignItems: 'center',
-    justifyContent: 'space-between'
+        // marginTop: 8,
+        margin: 2,
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        elevation: 3,
+        padding: 15,
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 
 });

@@ -8,7 +8,7 @@ import { db } from '../../config'
 import PostsList from '../../components/PostsList'
 
 
-export default function AddCidades() {
+export default function AddEmpresa() {
     // const navigation = useNavigation();
     // const { user } = useContext(AuthContext);
     // const [posts, setPosts] = useState([]);
@@ -18,7 +18,7 @@ export default function AddCidades() {
         <View style={styles.container}>
 
 
-            <Text>Add cidades</Text>
+            <Text>Add empresa</Text>
 
 
         </View>
