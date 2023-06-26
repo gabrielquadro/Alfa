@@ -54,6 +54,35 @@ function AuthProvider({ children }) {
             })
     }
 
+    async function signUpUser(email, password, name, tipo) {
+        setLoadingAuth(true);
+        await auth.createUserWithEmailAndPassword(email, password)
+            .then((value) => {
+                const uid = value.user.uid
+                db.collection('users').doc(uid)
+                    .set({
+                        nome: name,
+                        tipo:tipo,
+                        createdAt: new Date(),
+                    }).then(() => {
+                        // let data = {
+                        //     uid: uid,
+                        //     nome: name,
+                        //     email: value.user.email
+                        // }
+                        // setUser(data);
+                        // storageUser(data);
+                        setLoadingAuth(false);
+
+                    })
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoadingAuth(false);
+
+            })
+    }
+
 
     async function signIn(email, password) {
         setLoadingAuth(true);
@@ -61,11 +90,12 @@ function AuthProvider({ children }) {
         auth.signInWithEmailAndPassword(email, password)
             .then((value) => {
                 const uid = value.user.uid
-                const userprofile = db.collection('user').doc(uid).get();
+                const userprofile = db.collection('users').doc(uid).get();
                 let data = {
                     uid: uid,
                     nome: userprofile.nome,
-                    email: value.user.email
+                    email: value.user.email,
+                    tipo: userprofile.tipo,
                 }
                 setUser(data);
                 storageUser(data);
@@ -94,7 +124,7 @@ function AuthProvider({ children }) {
 
 
     return (
-        <AuthContext.Provider value={{ signed: !!user, signUp, signIn , loadingAuth, loading, signOut, user}}>
+        <AuthContext.Provider value={{ signed: !!user, signUp, signIn , loadingAuth, loading, signOut, user, signUpUser}}>
             {children}
         </AuthContext.Provider>
     )

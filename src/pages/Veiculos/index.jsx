@@ -6,10 +6,11 @@ import Header from '../../components/Header';
 import { AuthContext } from '../../contexts/auth'
 import { db } from '../../config'
 import PostsList from '../../components/PostsList'
+import ListVeiculos from '../../components/ListVeiculos'
 
 
 
-export default function Modelo() {
+export default function Veiculos() {
     // const navigation = useNavigation();
     // const { user } = useContext(AuthContext);
     // const [posts, setPosts] = useState([]);
@@ -19,35 +20,36 @@ export default function Modelo() {
     // const [emptyList, setEmptyList] = useState(false);
     const navigation = useNavigation();
     const { signOut, user } = useContext(AuthContext);
-    const [modelos, setModelos] = useState([]);
     const [marcas, setMarcas] = useState([]);
+    const [modelos, setModelos] = useState([]);
+
+
 
     useFocusEffect(
         useCallback(() => {
-            setLoading(true);
-            async function fetchData() {
-                try {
-                  const modelosSnapshot = await db.collection('modelos').get();
-                  const modelosList = modelosSnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id,
-                  }));
-                  setModelos(modelosList);
-          
-                  const marcasSnapshot = await db.collection('marcas').get();
-                  const marcasList = marcasSnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id,
-                  }));
-                  setMarcas(marcasList);
-          
-                  setLoading(false);
-                } catch (error) {
-                  console.error(error);
-                }
-              }
-          
-              fetchData();
+            async function fetchPosts() {
+                setLoading(true);
+                await db.collection('veiculos')
+                    .get()
+                    .then((snapshoot) => {
+                        setMarcas([]);
+                        const formList = [];
+                        snapshoot.docs.map(u => {
+                            formList.push({
+                                ...u.data(),
+                                id: u.id,
+                            })
+                        })
+
+                        setMarcas(formList);
+                        setLoading(false);
+
+
+                    })
+
+            }
+            fetchPosts();
+
 
         }, [])
     );
@@ -63,20 +65,18 @@ export default function Modelo() {
                 </View>
             ) : (
                 <View style={{ flex: 1 }}>
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("AddModelos", { item: null })}>
-                        <Text style={styles.btnSairTxt}>Novo modelo</Text>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("AddVeiculo", { marca: null })}>
+                        <Text style={styles.btnSairTxt}>Novo veículo</Text>
                     </TouchableOpacity>
                     <FlatList
                         style={styles.list}
-                        data={modelos}
+                        data={marcas}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.listView} onPress={() => navigation.navigate('AddModelos', { item: item })}>
-                                <Text>{item.nome}</Text>
-                                <Text>{(marcas.find(marca => marca.id === item.marca)).nome}</Text>
-                            </TouchableOpacity>
-                        )}
-
+                            <ListVeiculos
+                              data={item}
+                            />
+                          )}
                     >
 
                     </FlatList>

@@ -17,6 +17,10 @@ import Marca from '../pages/Marca';
 import AddMarca from '../pages/AddMarca';
 import Modelo from '../pages/Modelo';
 import AddModelo from '../pages/AdddModelo';
+import Veiculos from '../pages/Veiculos';
+import AddVeiculo from '../pages/AddVeiculo';
+import SolicitacaoListAdm from '../pages/SolicitacaoListAdm'
+import SolicitacaoAdm from '../pages/SolicitacaoAdm';
 
 const DrawerMenu = createDrawerNavigator();
 const StackHome = createNativeStackNavigator();
@@ -45,6 +49,8 @@ function AppRoutes() {
             <StackHome.Screen name="AddEmpresa" component={AddEmpresa} options={{ headerShown: true , headerTitle:'Nova empresa'}} />
             <StackHome.Screen name="AddModelos" component={AddModelo} options={{ headerShown: true , headerTitle:'Novo modelo'}} />
             <StackHome.Screen name="AddMarca" component={AddMarca} options={{ headerShown: true , headerTitle:'Nova marca'}} />
+            <StackHome.Screen name="AddVeiculo" component={AddVeiculo} options={{ headerShown: true , headerTitle:'Novo veículo'}} />
+            <StackHome.Screen name="Solicitacao" component={SolicitacaoAdm} options={{ headerShown: true , headerTitle:'Solicitação'}} />
         </StackHome.Navigator>
     )
 }
@@ -52,24 +58,13 @@ function AppRoutes() {
 function MenuRoutes() {
     return (
         <DrawerMenu.Navigator backgroundColor='#8B572A' labelStyle={{ color: "black" }} drawerContent={props => <DrawerContent {...props} />}>
-            <DrawerMenu.Screen name="Home"
-                component={Home}
-                options={{
-                    drawerIcon: ({ color }) => (
-                        <FontAwesome name="home" size={22} color={color} />
-                    ),
-                    drawerLabelStyle: { marginLeft: -10 },
-                    unmountOnBlur: true,
-                    headerShown: true,
-                }} />
-
-            <DrawerMenu.Screen
-                name="Empresas"
+           <DrawerMenu.Screen
+                name="Requisicao veiculo"
                 headerShown='false'
-                component={Empresas}
+                component={SolicitacaoListAdm}
                 options={{
                     drawerIcon: ({ color }) => (
-                        <Feather name="user" size={22} color={color} />
+                        <FontAwesome5 name="car-side" size={22} color={color} />
                     ),
                     drawerLabelStyle: { marginLeft: -10 },
                     unmountOnBlur: true,
@@ -133,7 +128,7 @@ function MenuRoutes() {
             <DrawerMenu.Screen
                 name="Veiculos"
                 headerShown='false'
-                component={Profile}
+                component={Veiculos}
                 options={{
                     drawerIcon: ({ color }) => (
                         <FontAwesome5 name="car-side" size={22} color={color} />
@@ -143,19 +138,7 @@ function MenuRoutes() {
                     headerShown: true,
                 }}
             />
-            <DrawerMenu.Screen
-                name="Requisicao veiculo"
-                headerShown='false'
-                component={Profile}
-                options={{
-                    drawerIcon: ({ color }) => (
-                        <FontAwesome5 name="car-side" size={22} color={color} />
-                    ),
-                    drawerLabelStyle: { marginLeft: -10 },
-                    unmountOnBlur: true,
-                    headerShown: true,
-                }}
-            />
+            
         </DrawerMenu.Navigator>
     )
 }

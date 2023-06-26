@@ -7,36 +7,60 @@ import { TextInput } from "react-native-paper";
 import { Picker } from '@react-native-picker/picker';
 
 
-export default function AddModelo({ route }) {
+export default function AddVeiculo({ route }) {
     const { item } = route.params;
     const [loading, setLoading] = useState(false);
-    const [name, setName] = useState(item != null ? item.nome : "");
+    // const [name, setName] = useState(item != null ? item.nome : "");
+    const [placa, setPlaca] = useState(item != null ? item.placa : "");
     const [marca, setMarca] = useState(item != null ? item.marca : "");
-    const [marcaNome, setMarcaNome] = useState(item != null ? item.marcaNome : "");
     const [marcas, setMarcas] = useState([]);
-
+    const [modelos, setModelos] = useState([]);
+    const [modelo, setModelo] = useState(item != null ? item.modelo : "");
     const navigation = useNavigation();
 
 
 
     const handleChangeMarca = (value) => {
         setMarca(value);
+        setModelo('')
+        async function fetchModelos() {
+            db.collection('modelos')
+                .where('marca', '==', value)
+                .get()
+                .then((snapshoot) => {
+                    setModelos([]);
+                    const list = [];
+                    snapshoot.docs.map(u => {
+                        list.push({
+                            ...u.data(),
+                            id: u.id,
+                        })
+                    })
+                    setModelos(list);
+
+                })
+        }
+        fetchModelos();
     }
 
-
+    const handleChangeModelo = (value) => {
+        setModelo(value);
+    }
 
 
 
     async function handleSave() {
         if (item != null) {
             setLoading(true)
-            await db.collection('modelos').doc(item.id).set({
+            await db.collection('veiculos').doc(item.id).set({
                 created: new Date(),
-                nome: name,
                 marca: marca,
+                modelo: modelo,
+                placa: placa,
+    
             })
                 .then(() => {
-                    console.log('Adicionado modelo')
+                    console.log('Adicionado veiculo')
                 })
                 .catch((error) => {
                     console.log(error);
@@ -46,13 +70,14 @@ export default function AddModelo({ route }) {
                 })
         } else {
             setLoading(true)
-            await db.collection('modelos').add({
+            await db.collection('veiculos').add({
                 created: new Date(),
-                nome: name,
                 marca: marca,
+                modelo: modelo,
+                placa: placa,
             })
                 .then(() => {
-                    console.log('Adicionado modelo')
+                    console.log('Adicionado veiculo')
                 })
                 .catch((error) => {
                     console.log(error);
@@ -67,8 +92,8 @@ export default function AddModelo({ route }) {
 
     useFocusEffect(
         useCallback(() => {
-            async function fetchMarcas() {
-                setLoading(true);
+            setLoading(true);
+            async function fetchPosts() {
                 db.collection('marcas')
                     .get()
                     .then((snapshoot) => {
@@ -77,16 +102,35 @@ export default function AddModelo({ route }) {
                         snapshoot.docs.map(u => {
                             list.push({
                                 ...u.data(),
-                                id: u.id
+                                id: u.id,
                             })
                         })
                         setMarcas(list);
-                        setLoading(false);
 
                     })
             }
-            fetchMarcas();
-            
+            if (modelo != "") {
+                async function fetchModelos() {
+                    db.collection('modelos')
+                        .get()
+                        .then((snapshoot) => {
+                            setModelos([]);
+                            const list = [];
+                            snapshoot.docs.map(u => {
+                                list.push({
+                                    ...u.data(),
+                                    id: u.id,
+                                })
+                            })
+                            setModelos(list);
+
+                        })
+                }
+                fetchModelos();
+            }
+            fetchPosts();
+            setLoading(false);
+
         }, [])
     )
 
@@ -101,12 +145,12 @@ export default function AddModelo({ route }) {
                 <View>
                     <TextInput
                         //theme={theme}
-                        label="Nome"
+                        label="Placa"
                         mode="flat"
                         //textColor="#000"
                         style={styles.imput}
-                        value={name}
-                        onChangeText={(text) => setName(text)}
+                        value={placa}
+                        onChangeText={(text) => setPlaca(text)}
                     />
 
                     <View style={styles.picker}>
@@ -114,7 +158,7 @@ export default function AddModelo({ route }) {
                             // style={{ color: 'white' }}
                             // dropdownIconColor={'white'}
                             selectedValue={marca}
-                            onValueChange={(state) => setMarca(state)}>
+                            onValueChange={handleChangeMarca}>
                             <Picker.Item label="Selecione a marca" value="" />
                             {marcas.map((state) => (
                                 <Picker.Item
@@ -126,7 +170,22 @@ export default function AddModelo({ route }) {
                         </Picker>
                     </View>
 
-
+                    <View style={styles.picker}>
+                        <Picker
+                            // style={{ color: 'white' }}
+                            // dropdownIconColor={'white'}
+                            selectedValue={modelo}
+                            onValueChange={handleChangeModelo}>
+                            <Picker.Item label="Selecione o modelo" value="" />
+                            {modelos.map((state) => (
+                                <Picker.Item
+                                    key={state.id}
+                                    label={state.nome}
+                                    value={state.id}
+                                />
+                            ))}
+                        </Picker>
+                    </View>
 
                     <TouchableOpacity style={styles.btn} onPress={handleSave}>
                         <Text style={styles.btnSairTxt}>Salvar</Text>

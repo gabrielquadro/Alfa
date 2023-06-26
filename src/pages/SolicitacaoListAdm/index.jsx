@@ -1,57 +1,41 @@
 import React, { useState, useContext, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import Header from '../../components/Header';
 import { AuthContext } from '../../contexts/auth'
 import { db } from '../../config'
-import PostsList from '../../components/PostsList'
 
-
-
-export default function Modelo() {
-    // const navigation = useNavigation();
-    // const { user } = useContext(AuthContext);
-    // const [posts, setPosts] = useState([]);
+export default function SolicitacaoListC() {
     const [loading, setLoading] = useState(false);
     const [loadingRefresh, setLoadingRefresh] = useState(false);
-    // const [lastItem, setLastItem] = useState('');
-    // const [emptyList, setEmptyList] = useState(false);
     const navigation = useNavigation();
     const { signOut, user } = useContext(AuthContext);
     const [modelos, setModelos] = useState([]);
-    const [marcas, setMarcas] = useState([]);
 
     useFocusEffect(
         useCallback(() => {
             setLoading(true);
-            async function fetchData() {
-                try {
-                  const modelosSnapshot = await db.collection('modelos').get();
-                  const modelosList = modelosSnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id,
-                  }));
-                  setModelos(modelosList);
-          
-                  const marcasSnapshot = await db.collection('marcas').get();
-                  const marcasList = marcasSnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id,
-                  }));
-                  setMarcas(marcasList);
-          
-                  setLoading(false);
-                } catch (error) {
-                  console.error(error);
-                }
-              }
-          
-              fetchData();
+            async function fetchPosts() {
+                await db.collection('solicitacoes')
+                    .get()
+                    .then((snapshoot) => {
+                        setModelos([]);
+                        const formList = [];
+                        snapshoot.docs.map(u => {
+                            formList.push({
+                                ...u.data(),
+                                id: u.id,
+                            })
+                        })
+
+                        setModelos(formList);
+                        setLoading(false);
+
+                    })
+            }
+            fetchPosts();
 
         }, [])
     );
-
 
     return (
         <View style={styles.container}>
@@ -62,21 +46,18 @@ export default function Modelo() {
                     <ActivityIndicator SIZE={50} color="black"></ActivityIndicator>
                 </View>
             ) : (
-                <View style={{ flex: 1 }}>
-                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("AddModelos", { item: null })}>
-                        <Text style={styles.btnSairTxt}>Novo modelo</Text>
-                    </TouchableOpacity>
+                <View style={{ flex: 1 , marginVertical: 10}}>
                     <FlatList
                         style={styles.list}
                         data={modelos}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.listView} onPress={() => navigation.navigate('AddModelos', { item: item })}>
-                                <Text>{item.nome}</Text>
-                                <Text>{(marcas.find(marca => marca.id === item.marca)).nome}</Text>
+                            <TouchableOpacity style={styles.listView} onPress={() => navigation.navigate('Solicitacao', { item: item })}>
+                                <Text>{item.nomeSolicitante}</Text>
+                                <Text>{item.diaSaida}/{item.mesSaida}/{item.anoSaida} {item.horaSaida}:{item.minutoSaida}</Text>
+                                <Text>{item.status}</Text>
                             </TouchableOpacity>
                         )}
-
                     >
 
                     </FlatList>

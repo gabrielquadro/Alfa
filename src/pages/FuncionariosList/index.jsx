@@ -21,96 +21,32 @@ export default function FuncionarioList() {
     const { signOut, user } = useContext(AuthContext);
     const [funcionarios, setFuncionarios] = useState([]);
 
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         let isActive = true;
+    useFocusEffect(
+        useCallback(() => {
+            async function fetchPosts() {
+            setLoading(true);
 
-    //         async function fetchPosts() {
-    //             db.collection('posts')
-    //                 .orderBy('created', 'desc')
-    //                 .limit(5)
-    //                 .get()
-    //                 .then((snapshoot) => {
-    //                     if (isActive) {
-    //                         setPosts([]);
-    //                         const postList = [];
-    //                         snapshoot.docs.map(u => {
-    //                             postList.push({
-    //                                 ...u.data(),
-    //                                 id: u.id,
-    //                             })
-    //                         })
+                await db.collection('users')
+                    .get()
+                    .then((snapshoot) => {
+                        setFuncionarios([]);
+                        const formList = [];
+                        snapshoot.docs.map(u => {
+                            formList.push({
+                                ...u.data(),
+                                id: u.id,
+                            })
+                        })
 
-    //                         setPosts(postList);
-    //                         setEmptyList(!!snapshoot.empty)
-    //                         setLastItem(snapshoot.docs[snapshoot.docs.length - 1])
-    //                         setLoading(false);
-    //                     }
-    //                 })
-    //         }
-    //         fetchPosts();
-    //         return () => {
-    //             isActive = false;
-    //         }
-    //     }, [])
-    // )
-    // //pega posts ao final da lista
-    // async function getListPosts() {
-    //     if (emptyList) {
-    //         setLoading(false);
-    //         return;
-    //     }
+                        setFuncionarios(formList);
+                        setLoading(false);
 
-    //     if (loading) return;
+                    })
+            }
+            fetchPosts();
 
-    //     db.collection('posts')
-    //         .orderBy('created', 'desc')
-    //         .limit(5)
-    //         .startAfter(lastItem)
-    //         .get()
-    //         .then((snapshoot) => {
-    //             const postList = [];
-    //             snapshoot.docs.map(u => {
-    //                 postList.push({
-    //                     ...u.data(),
-    //                     id: u.id,
-    //                 })
-    //             })
-
-    //             setEmptyList(!!snapshoot.empty)
-    //             setLastItem(snapshoot.docs[snapshoot.docs.length - 1])
-    //             setPosts(oldPosts => [...oldPosts, ...postList]);
-    //             setLoading(false);
-    //         })
-
-    // }
-
-    // function handlerefreshPosts() {
-    //     setLoadingRefresh(true);
-
-    //     db.collection('posts')
-    //         .orderBy('created', 'desc')
-    //         .limit(5)
-    //         .get()
-    //         .then((snapshoot) => {
-
-    //             setPosts([]);
-    //             const postList = [];
-    //             snapshoot.docs.map(u => {
-    //                 postList.push({
-    //                     ...u.data(),
-    //                     id: u.id,
-    //                 })
-    //             })
-
-    //             setPosts(postList);
-    //             setEmptyList(false)
-    //             setLastItem(snapshoot.docs[snapshoot.docs.length - 1])
-    //             setLoading(false);
-
-    //         })
-    //     setLoadingRefresh(false)
-    // }
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
@@ -130,16 +66,11 @@ export default function FuncionarioList() {
                         data={funcionarios}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
-                            <PostsList
-                                data={item}
-                                userId={user.uid}
-                            />
+                            <TouchableOpacity style={styles.listView}>
+                                <Text>{item.nome}</Text>
+                                <Text>{item.tipo}</Text>
+                            </TouchableOpacity>
                         )}
-
-                        // refreshing={loadingRefresh}
-                        // onRefresh={handlerefreshPosts}
-                        // onEndReached={() => getListPosts()}
-                        // onEndReachedThreshold={0.1}
                     >
 
                     </FlatList>
@@ -170,7 +101,8 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
-        backgroundColor: '#f1f1f1'
+        backgroundColor: '#f1f1f1',
+        paddingHorizontal: 10
     },
     btn: {
         marginTop: 16,
@@ -185,6 +117,18 @@ const styles = StyleSheet.create({
     btnSairTxt:{
         fontSize: 16,
         color: '#FFF'
+    },
+    listView: {
+        flexDirection: 'row',
+    // marginTop: 8,
+    margin: 2,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    elevation: 3,
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'space-between'
     }
+
 
 });
