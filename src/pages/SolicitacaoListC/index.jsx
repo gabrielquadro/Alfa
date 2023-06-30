@@ -62,7 +62,7 @@ export default function SolicitacaoListC() {
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <TouchableOpacity style={styles.listView} onPress={() => navigation.navigate('SolicitacaoC', { item: item })}>
-                                <Text>{item.diaSaida}/{item.mesSaida}/{item.anoSaida} {item.horaSaida}:{item.minutoSaida}</Text>
+                                <Text>{item.diaSaida}/{item.mesSaida}/{item.anoSaida}    {item.horaSaida}:{item.minutoSaida}</Text>
                                 <Text>{item.status}</Text>
                             </TouchableOpacity>
                         )}
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         // marginTop: 16,
-        backgroundColor: '#428cfd',
+        backgroundColor: 'black',
         //width: '80%',
         height: 40,
         borderRadius: 4,

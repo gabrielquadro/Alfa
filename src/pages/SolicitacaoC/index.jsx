@@ -7,6 +7,8 @@ import { TextInput } from "react-native-paper";
 import { Picker } from '@react-native-picker/picker';
 import { AuthContext } from '../../contexts/auth'
 import { ScrollView } from 'react-native-gesture-handler';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+
 
 export default function SolicitacaoC({ route }) {
     const { item } = route.params;
@@ -124,7 +126,14 @@ export default function SolicitacaoC({ route }) {
         }
     }
 
-
+    const theme = {
+        ...DefaultTheme,
+        colors: {
+          ...DefaultTheme.colors,
+          primary: 'black',
+          onSurfaceVariant: 'black',
+        },
+      };
 
 
 
@@ -141,7 +150,6 @@ export default function SolicitacaoC({ route }) {
                         //theme={theme}
                         label="Motivo"
                         mode="flat"
-                        //textColor="#000"
                         style={styles.imput}
                         value={motivo}
                         onChangeText={(text) => setMotivo(text)}
@@ -314,7 +322,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         marginTop: 16,
-        backgroundColor: '#428cfd',
+        backgroundColor: 'black',
         //width: '80%',
         height: 40,
         borderRadius: 4,
@@ -334,8 +342,9 @@ const styles = StyleSheet.create({
     },
     imput: {
         marginTop: 12,
-        borderColor: "#fff",
+        borderColor: "black",
         borderWidth: 1,
+        backgroundColor: 'transparent'
     },
     picker: {
         borderWidth: 1,

@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         marginTop: 16,
-        backgroundColor: '#428cfd',
+        backgroundColor: 'black',
         //width: '80%',
         height: 40,
         borderRadius: 4,

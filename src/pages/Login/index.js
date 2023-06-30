@@ -1,11 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { AuthContext } from '../../contexts/auth'
+import { AntDesign , Ionicons } from "@expo/vector-icons";
+import { TextInput } from 'react-native-paper';
+
+
 export default function Login() {
     const [login, setLogin] = useState(true);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [hidePass, setHidePass] = useState(true);
 
     const { signUp, signIn, loadingAuth } = useContext(AuthContext);
 
@@ -30,6 +35,7 @@ export default function Login() {
     if (login) {
         return (
             <View style={styles.container}>
+                <Ionicons name="car-sport" size={50} color="black" />
                 <Text style={styles.title}>Alfa solicitações</Text>
                 <TextInput style={styles.imput}
                     value={email}
@@ -40,7 +46,13 @@ export default function Login() {
                     value={senha}
                     onChangeText={(text) => setSenha(text)}
                     placeholder="senha"
-                    placeholderTextColor='#000' />
+                    secureTextEntry={hidePass}
+                    placeholderTextColor='#000' 
+                    right={<TextInput.Icon icon={({ color, size }) => (
+                        <AntDesign name="eye" size={24} color="black" onPress={() => setHidePass(!hidePass)} />
+                      )} />}
+                    />
+
                 <TouchableOpacity onPress={handleSignIn} style={styles.btn}>
                     {loadingAuth ? (
                         <ActivityIndicator size={20} color="#FFF" />
@@ -48,9 +60,9 @@ export default function Login() {
                     }
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.signUpBtn}>
+                {/* <TouchableOpacity style={styles.signUpBtn}>
                     <Text onPress={() => setLogin(!login)} style={styles.signUpBtnTxt}>Cadastrar</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
             </View>
         )
@@ -92,12 +104,12 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0000FF',
+        backgroundColor: '#0000FFaa',
         justifyContent: 'center',
         alignItems: 'center'
     },
     title: {
-        color: '#FFF',
+        color: 'black',
         fontSize: 45,
         fontWeight: 'bold',
         fontStyle: 'italic',
@@ -106,17 +118,15 @@ const styles = StyleSheet.create({
     imput: {
         width: '80%',
         backgroundColor: '#FFF',
-        marginTop: 10,
-        padding: 10,
+        marginTop: 12,
         borderRadius: 8,
-        fontSize: 17,
     },
     btn: {
         width: '80%',
-        backgroundColor: '#808080',
+        backgroundColor: 'black',
         borderRadius: 8,
         marginTop: 10,
-        padding: 10,
+        padding: 15,
         justifyContent: 'center',
         alignItems: 'center'
     },

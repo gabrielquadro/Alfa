@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Feather, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome5, MaterialCommunityIcons , MaterialIcons, Ionicons  } from '@expo/vector-icons';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -64,7 +64,7 @@ function MenuRoutes() {
                 component={SolicitacaoListAdm}
                 options={{
                     drawerIcon: ({ color }) => (
-                        <FontAwesome5 name="car-side" size={22} color={color} />
+                        <MaterialIcons name="playlist-add-check" size={26} color={color} />
                     ),
                     drawerLabelStyle: { marginLeft: -10 },
                     unmountOnBlur: true,
@@ -78,7 +78,7 @@ function MenuRoutes() {
                 component={FuncionariosList}
                 options={{
                     drawerIcon: ({ color }) => (
-                        <Feather name="user" size={22} color={color} />
+                        <Ionicons name="people" size={26} color={color} />
                     ),
                     drawerLabelStyle: { marginLeft: -10 },
                     unmountOnBlur: true,
@@ -105,7 +105,7 @@ function MenuRoutes() {
                 component={Marca}
                 options={{
                     drawerIcon: ({ color }) => (
-                        <FontAwesome5 name="car-side" size={22} color={color} />
+                        <MaterialCommunityIcons name="car-multiple" size={28} color={color} />
                     ),
                     drawerLabelStyle: { marginLeft: -10 },
                     unmountOnBlur: true,
@@ -118,7 +118,7 @@ function MenuRoutes() {
                 component={Modelo}
                 options={{
                     drawerIcon: ({ color }) => (
-                        <FontAwesome5 name="car-side" size={22} color={color} />
+                        <MaterialCommunityIcons name="car-info" size={26} color={color} />
                     ),
                     drawerLabelStyle: { marginLeft: -10 },
                     unmountOnBlur: true,

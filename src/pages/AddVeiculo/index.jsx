@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         marginTop: 16,
-        backgroundColor: '#428cfd',
+        backgroundColor: 'black',
         //width: '80%',
         height: 40,
         borderRadius: 4,
@@ -220,8 +220,9 @@ const styles = StyleSheet.create({
     },
     imput: {
         marginTop: 12,
-        borderColor: "#fff",
+        borderColor: "black",
         borderWidth: 1,
+        backgroundColor: 'transparent'
     },
     picker: {
         borderWidth: 1,

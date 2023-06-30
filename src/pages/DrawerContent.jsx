@@ -30,7 +30,7 @@ const DrawerContent = (props) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: '#0000FF' }}>
+            <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: '#0000FFaa' }}>
                 <TouchableOpacity onPress={() => navigation.navigate("Perfil")} style={{ padding: 18 , flexDirection:'row' , justifyContent:'space-between'}}>
                     <Text style={{ color: '#fff', marginBottom: 10 , fontSize: 16}}>{userP.nome}</Text>
                     <Entypo name="edit" size={22} color="white" />

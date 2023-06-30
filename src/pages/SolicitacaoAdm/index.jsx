@@ -475,8 +475,10 @@ const styles = StyleSheet.create({
     },
     imput: {
         marginTop: 12,
-        borderColor: "#fff",
+        borderColor: "black",
         borderWidth: 1,
+        backgroundColor: 'transparent'
+
     },
     picker: {
         borderWidth: 1,
