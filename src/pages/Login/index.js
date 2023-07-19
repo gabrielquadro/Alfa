@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator ,TouchableWithoutFeedback,
+    Keyboard,} from 'react-native';
 import { AuthContext } from '../../contexts/auth'
-import { AntDesign , Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { TextInput } from 'react-native-paper';
 
 
@@ -31,40 +32,48 @@ export default function Login() {
         //cadastrar usuário
         await signUp(email, senha, name)
     }
+    const dismissKeyboard = () => {
+        Keyboard.dismiss();
+      };
 
     if (login) {
         return (
-            <View style={styles.container}>
-                <Ionicons name="car-sport" size={50} color="black" />
-                <Text style={styles.title}>Alfa solicitações</Text>
-                <TextInput style={styles.imput}
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
-                    placeholder="email"
-                    placeholderTextColor='#000' />
-                <TextInput style={styles.imput}
-                    value={senha}
-                    onChangeText={(text) => setSenha(text)}
-                    placeholder="senha"
-                    secureTextEntry={hidePass}
-                    placeholderTextColor='#000' 
-                    right={<TextInput.Icon icon={({ color, size }) => (
-                        <AntDesign name="eye" size={24} color="black" onPress={() => setHidePass(!hidePass)} />
-                      )} />}
+            <TouchableWithoutFeedback onPress={dismissKeyboard}>
+
+                <View style={styles.container}>
+                    <Ionicons name="car-sport" size={50} color="black" />
+                    <Text style={styles.title}>Alfa solicitações</Text>
+                    <TextInput style={styles.imput}
+                        value={email}
+                        onChangeText={(text) => setEmail(text)}
+                        placeholder="email"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        placeholderTextColor='#000' />
+                    <TextInput style={styles.imput}
+                        value={senha}
+                        onChangeText={(text) => setSenha(text)}
+                        placeholder="senha"
+                        secureTextEntry={hidePass}
+                        placeholderTextColor='#000'
+                        right={<TextInput.Icon icon={({ color, size }) => (
+                            <AntDesign name="eye" size={24} color="black" onPress={() => setHidePass(!hidePass)} />
+                        )} />}
                     />
 
-                <TouchableOpacity onPress={handleSignIn} style={styles.btn}>
-                    {loadingAuth ? (
-                        <ActivityIndicator size={20} color="#FFF" />
-                    ) : (<Text style={styles.btnTxt}>Acessar</Text>)
-                    }
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={handleSignIn} style={styles.btn}>
+                        {loadingAuth ? (
+                            <ActivityIndicator size={20} color="#FFF" />
+                        ) : (<Text style={styles.btnTxt}>Acessar</Text>)
+                        }
+                    </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.signUpBtn}>
+                    {/* <TouchableOpacity style={styles.signUpBtn}>
                     <Text onPress={() => setLogin(!login)} style={styles.signUpBtnTxt}>Cadastrar</Text>
                 </TouchableOpacity> */}
 
-            </View>
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 
